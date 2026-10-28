@@ -1,0 +1,38 @@
+service: settlement-worker
+archetype: worker
+domain: payments
+purpose: Runs nightly to reconcile settled payments against order totals and flag discrepancies.
+
+schedule: "0 2 * * *"
+
+calls:
+  order-service:
+    via: rest
+    ops:
+      - GET /orders
+
+consumes:
+  payment.settled:
+    handler: recordSettlement
+
+publishes:
+  - reconciliation.completed
+
+stores:
+  reconciliation:
+    kind: relational
+    pattern: append-only
+    retention: 7y
+    entities:
+      Reconciliation:
+        id: uuid pk
+        orderId: uuid index
+        expectedAmount: money
+        settledAmount: money
+        discrepancy: money
+        runAt: timestamp
+
+deviations:
+  ARCH-010:
+    reason: The worker must cross-check payment totals against authoritative order data; there is no event-carried version of this aggregate.
+    scope: calls.order-service

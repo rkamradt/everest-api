@@ -1,0 +1,43 @@
+archetype: messaging
+version: 1.0.0
+summary: Reacts to domain events. Has no HTTP interface beyond a health endpoint.
+
+responsibilities:
+  must:
+    - Consume the event topics declared in its consumes map
+    - Execute business logic triggered by those events
+    - Publish resulting events for downstream consumers
+    - Manage its own consumer group offset and handle replay
+  mustNot:
+    - Expose HTTP routes for domain operations (health endpoint only)
+    - Own a persistent relational or document store for domain data
+    - Wrap or call a third-party external API directly
+    - Accept inbound webhook or feed payloads
+
+communication:
+  inbound:
+    - consume
+    - accept
+  outbound:
+    - publish
+    - send
+    - rest
+
+persistence:
+  allowed:
+    - kv
+    - cache
+  default: kv
+
+requires:
+  - consumes
+
+rules:
+  - ARCH-001
+  - EVT-001
+  - EVT-002
+  - CMD-001
+  - CMD-002
+  - PERS-003
+  - COMM-001
+  - REF-001

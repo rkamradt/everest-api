@@ -1,0 +1,43 @@
+archetype: provider
+version: 1.0.0
+summary: Translates a third-party external API into internal events. Contains no business logic.
+
+naming:
+  idSuffix: "-provider"
+  nameSuffix: "Provider"
+
+responsibilities:
+  must:
+    - Call the declared foreign.outbound API via a dedicated client module
+    - Translate foreign API responses to internal event schemas exactly
+    - Publish translated events to the declared topics
+    - Handle foreign API authentication and retry at the transport layer
+  mustNot:
+    - Contain conditional business logic beyond field mapping
+    - Own domain stores (kv and cache are allowed for token/rate-limit state)
+    - Consume internal events or accept webhook payloads as inbound
+    - Expose domain HTTP routes
+
+communication:
+  inbound:
+    - accept
+  outbound:
+    - publish
+    - foreign-outbound
+
+persistence:
+  allowed:
+    - kv
+    - cache
+  default: kv
+
+requires:
+  - foreign.outbound
+  - publishes
+
+rules:
+  - ARCH-020
+  - NAME-001
+  - EVT-001
+  - COMM-001
+  - REF-001

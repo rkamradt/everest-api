@@ -1,0 +1,14 @@
+PlaceOrder:
+  kioskId: string
+  customerId: uuid?
+  lines: list<OrderLineInput>
+
+OrderLineInput:
+  sku: string
+  qty: int min(1)
+
+OrderLine:
+  orderId: uuid fk(Order) cascade
+  sku: string
+  qty: int min(1)
+  price: money

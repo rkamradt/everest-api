@@ -1,0 +1,21 @@
+service: fulfillment-service
+archetype: messaging
+domain: fulfillment
+purpose: Receives fulfilled orders and coordinates handoff to the shipping provider.
+stack: python-fastapi
+
+accepts:
+  fulfillment.ship:
+    handler: initiateShipment
+
+consumes:
+  order.paid:
+    handler: queueForFulfillment
+
+publishes:
+  - fulfillment.started
+
+stores:
+  fulfillment-state:
+    kind: kv
+    pattern: crud

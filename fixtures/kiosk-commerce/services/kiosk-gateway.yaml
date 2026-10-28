@@ -1,0 +1,27 @@
+service: kiosk-gateway
+archetype: gateway
+domain: kiosk
+purpose: Routes kiosk UI requests to backend services. Handles authentication and rate limiting.
+
+api:
+  rest:
+    POST /gateway/orders:
+      desc: Proxy to order-service POST /orders
+    GET /gateway/orders/{orderId}:
+      desc: Proxy to order-service GET /orders/{orderId}
+    GET /gateway/products:
+      desc: Proxy to catalog-service GET /products
+    GET /gateway/products/{sku}:
+      desc: Proxy to catalog-service GET /products/{sku}
+
+calls:
+  order-service:
+    via: rest
+    ops:
+      - POST /orders
+      - GET /orders/{orderId}
+  catalog-service:
+    via: rest
+    ops:
+      - GET /products
+      - GET /products/{sku}

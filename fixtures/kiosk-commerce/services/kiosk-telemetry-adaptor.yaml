@@ -1,0 +1,18 @@
+service: kiosk-telemetry-adaptor
+archetype: adaptor
+domain: kiosk
+purpose: Accepts MQTT telemetry frames from physical kiosk devices and translates them into internal events.
+
+foreign:
+  inbound:
+    name: MQTT
+    protocol: mqtt
+    topic: kiosks/+/telemetry
+
+publishes:
+  - kiosk.telemetry.received
+
+stores:
+  idempotency:
+    kind: kv
+    pattern: append-only

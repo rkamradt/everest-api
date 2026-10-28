@@ -1,0 +1,41 @@
+archetype: adaptor
+version: 1.0.0
+summary: Accepts foreign inbound payloads (webhooks, SFTP drops, feeds) and translates them into internal events. Contains no business logic.
+
+naming:
+  idSuffix: "-adaptor"
+  nameSuffix: "Adaptor"
+
+responsibilities:
+  must:
+    - Validate inbound foreign payloads against the declared foreign.inbound schema
+    - Translate validated payloads to internal event schemas exactly
+    - Publish translated events to the declared topics
+    - Respond to the foreign caller with the expected acknowledgement
+  mustNot:
+    - Contain conditional business logic beyond field mapping and validation
+    - Own domain stores (kv allowed for idempotency keys)
+    - Make outbound calls to internal services via REST or gRPC
+    - Call foreign APIs outbound
+
+communication:
+  inbound:
+    - foreign-inbound
+  outbound:
+    - publish
+
+persistence:
+  allowed:
+    - kv
+  default: kv
+
+requires:
+  - foreign.inbound
+  - publishes
+
+rules:
+  - ARCH-020
+  - NAME-001
+  - EVT-001
+  - COMM-001
+  - REF-001

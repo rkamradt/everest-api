@@ -1,0 +1,22 @@
+service: payment-provider
+archetype: provider
+domain: payments
+purpose: Translates Stripe charge requests into internal payment.settled events. Contains no business logic.
+
+foreign:
+  outbound:
+    name: Stripe
+    baseUrl: https://api.stripe.com
+    auth: bearer-token
+
+accepts:
+  payment.charge:
+    handler: chargeCard
+
+publishes:
+  - payment.settled
+
+stores:
+  rate-limit:
+    kind: kv
+    pattern: append-only

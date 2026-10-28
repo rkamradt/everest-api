@@ -1,0 +1,44 @@
+archetype: worker
+version: 1.0.0
+summary: Runs on a cron schedule. Reads state, performs computation, and publishes results.
+
+responsibilities:
+  must:
+    - Run on the declared schedule
+    - Read the data sources it needs (via calls or its own stores)
+    - Perform the scheduled computation or batch job
+    - Publish results as events or write to its stores
+  mustNot:
+    - Accept inbound HTTP requests for domain operations (health endpoint only)
+    - Accept foreign webhook or feed payloads
+
+communication:
+  inbound:
+    - schedule
+  outbound:
+    - rest
+    - publish
+    - send
+
+persistence:
+  allowed:
+    - relational
+    - document
+    - kv
+    - cache
+    - blob
+    - search
+  default: relational
+
+requires:
+  - schedule
+
+rules:
+  - ARCH-001
+  - EVT-001
+  - EVT-002
+  - CMD-001
+  - CMD-002
+  - PERS-003
+  - COMM-001
+  - REF-001

@@ -1,0 +1,49 @@
+rules:
+  ARCH-001:
+    description: No store is owned by more than one service
+    enforcement: locked
+
+  ARCH-010:
+    description: Calls between services in different domains must be async; gateway exempt
+    enforcement: default
+
+  ARCH-020:
+    description: provider and adaptor archetypes have no domain stores (only kv or cache)
+    enforcement: default
+
+  EVT-001:
+    description: Each event has exactly one producer, and it matches the catalog owner
+    enforcement: locked
+
+  EVT-002:
+    description: Every consumed event exists in the catalog
+    enforcement: locked
+
+  CMD-001:
+    description: Each command has exactly one receiver, matching the catalog receiver and its accepts
+    enforcement: locked
+
+  CMD-002:
+    description: Every sent command exists in the catalog
+    enforcement: locked
+
+  PERS-003:
+    description: A service that writes a store and publishes events gets consistency outbox (set by resolver)
+    enforcement: default
+
+  NAME-001:
+    description: Archetype naming suffixes on id and name (provider → -provider/Provider, adaptor → -adaptor/Adaptor)
+    enforcement: default
+    autoFixable: true
+
+  DEP-001:
+    description: No cycles in synchronous calls
+    enforcement: locked
+
+  COMM-001:
+    description: Every edge uses a mode both archetypes allow, and calls.ops exist in the target's api
+    enforcement: locked
+
+  REF-001:
+    description: Every service, domain, type and handler referenced exists
+    enforcement: locked

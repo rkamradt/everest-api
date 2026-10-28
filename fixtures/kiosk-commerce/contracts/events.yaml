@@ -1,0 +1,71 @@
+order.placed:
+  owner: order-service
+  version: 1
+  key: orderId
+  delivery: at-least-once
+  retention: 7d
+  schema:
+    orderId: uuid
+    kioskId: string
+    customerId: uuid?
+    lines: list<OrderLine>
+    total: money
+    placedAt: timestamp
+
+order.paid:
+  owner: order-service
+  version: 1
+  key: orderId
+  delivery: at-least-once
+  retention: 7d
+  schema:
+    orderId: uuid
+    total: money
+    paidAt: timestamp
+
+payment.settled:
+  owner: payment-provider
+  version: 1
+  key: chargeId
+  delivery: at-least-once
+  retention: 30d
+  schema:
+    chargeId: uuid
+    orderId: uuid
+    amount: money
+    settledAt: timestamp
+
+fulfillment.started:
+  owner: fulfillment-service
+  version: 1
+  key: orderId
+  delivery: at-least-once
+  retention: 7d
+  schema:
+    orderId: uuid
+    trackingId: string
+    startedAt: timestamp
+
+reconciliation.completed:
+  owner: settlement-worker
+  version: 1
+  key: runId
+  delivery: at-least-once
+  retention: 90d
+  schema:
+    runId: uuid
+    ranAt: timestamp
+    ordersChecked: int
+    discrepanciesFound: int
+
+kiosk.telemetry.received:
+  owner: kiosk-telemetry-adaptor
+  version: 1
+  key: kioskId
+  delivery: at-least-once
+  retention: 3d
+  schema:
+    kioskId: string
+    metric: string
+    value: decimal(10,4)
+    recordedAt: timestamp

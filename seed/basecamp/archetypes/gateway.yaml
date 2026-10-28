@@ -1,0 +1,30 @@
+archetype: gateway
+version: 1.0.0
+summary: Routes inbound REST requests to backend services. Owns no data and performs no business logic.
+
+responsibilities:
+  must:
+    - Route every inbound request to exactly one downstream service via REST or gRPC
+    - "Handle cross-cutting concerns: auth, rate limiting, request routing"
+    - Aggregate responses only when required for a single client round-trip
+  mustNot:
+    - Own a persistent data store
+    - Contain domain business logic
+    - Publish or consume events
+    - Send commands
+
+communication:
+  inbound:
+    - rest
+  outbound:
+    - rest
+    - grpc
+
+persistence:
+  allowed: []
+  default: null
+
+rules:
+  - DEP-001
+  - COMM-001
+  - REF-001

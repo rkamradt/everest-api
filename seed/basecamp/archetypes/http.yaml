@@ -1,0 +1,53 @@
+archetype: http
+version: 1.0.0
+summary: Owns domain data and exposes a synchronous API. The backbone of request/response operations.
+
+responsibilities:
+  must:
+    - Own and persist domain data in its stores
+    - Implement every endpoint declared in api.rest or api.grpc
+    - Validate all inbound input before processing
+    - Enforce domain business rules and invariants
+    - Publish domain events for state changes others care about
+  mustNot:
+    - Wrap a third-party external API (use a provider for that)
+    - Accept foreign webhook or feed payloads directly (use an adaptor for that)
+    - Consume or process events not declared in its consumes map
+    - Share a data store with another service
+
+communication:
+  inbound:
+    - rest
+    - grpc
+    - consume
+    - accept
+  outbound:
+    - rest
+    - grpc
+    - publish
+    - send
+
+persistence:
+  allowed:
+    - relational
+    - document
+    - kv
+    - cache
+    - blob
+    - search
+  default: relational
+
+requires:
+  - api
+
+rules:
+  - ARCH-001
+  - ARCH-010
+  - EVT-001
+  - EVT-002
+  - CMD-001
+  - CMD-002
+  - PERS-003
+  - DEP-001
+  - COMM-001
+  - REF-001

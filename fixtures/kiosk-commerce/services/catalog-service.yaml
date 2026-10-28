@@ -1,0 +1,31 @@
+service: catalog-service
+archetype: http
+domain: merchandising
+purpose: Owns the product catalog including SKUs, descriptions, and current pricing.
+
+api:
+  rest:
+    GET /products/{sku}:
+      out: Product
+      desc: Get product details and current price by SKU
+    GET /products:
+      out: list<Product>
+      desc: List all active products
+    POST /products:
+      in: CreateProduct
+      out: Product
+      status: 201
+      desc: Create a new product
+
+stores:
+  catalog:
+    kind: relational
+    pattern: crud
+    entities:
+      Product:
+        sku: string pk
+        name: string
+        description: string?
+        price: money
+        active: bool
+        updatedAt: timestamp

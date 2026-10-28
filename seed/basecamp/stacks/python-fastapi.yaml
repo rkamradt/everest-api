@@ -1,0 +1,9 @@
+stack: python-fastapi
+version: 1.0.0
+runtime:
+  language: python
+  runtime: cpython
+  version: "3.12"
+  port: 8000
+  health: /health
+  framework: fastapi

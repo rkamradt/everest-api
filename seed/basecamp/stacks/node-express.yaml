@@ -1,0 +1,9 @@
+stack: node-express
+version: 1.0.0
+runtime:
+  language: javascript
+  runtime: node
+  version: "20"
+  port: 3000
+  health: /health
+  framework: express

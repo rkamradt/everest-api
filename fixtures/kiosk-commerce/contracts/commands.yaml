@@ -1,0 +1,17 @@
+payment.charge:
+  receiver: payment-provider
+  version: 1
+  schema:
+    orderId: uuid
+    amount: money
+    paymentToken: string
+  replies:
+    - payment.settled
+
+fulfillment.ship:
+  receiver: fulfillment-service
+  version: 1
+  schema:
+    orderId: uuid
+    lines: list<OrderLine>
+    shippingAddress: string

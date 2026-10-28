@@ -1,0 +1,16 @@
+ecosystem: kiosk-commerce
+extends: everest-basecamp@1.0
+description: Customers order at self-service kiosks.
+domains:
+  ordering: Orders from cart to handoff
+  payments: Card charges and their outcomes
+  merchandising: Product catalog and pricing
+  fulfillment: Order handoff and shipping
+  kiosk: Physical device management and routing
+profiles:
+  dev:
+    mocks: true
+    replicas: 1
+  prod:
+    mocks: false
+    replicas: 2

@@ -1,0 +1,28 @@
+archetype: web-app
+version: 1.0.0
+summary: A browser-delivered frontend. Communicates only with its designated gateway.
+
+responsibilities:
+  must:
+    - Deliver a browser application (HTML, JS, CSS)
+    - Call only the gateway declared in its calls map
+    - Authenticate users through the gateway
+  mustNot:
+    - Own a persistent data store
+    - Publish or consume events
+    - Call backend services other than its designated gateway
+    - Send commands
+
+communication:
+  inbound:
+    - browser
+  outbound:
+    - rest
+
+persistence:
+  allowed: []
+  default: null
+
+rules:
+  - COMM-001
+  - REF-001

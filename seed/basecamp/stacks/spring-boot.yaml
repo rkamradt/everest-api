@@ -1,0 +1,9 @@
+stack: spring-boot
+version: 1.0.0
+runtime:
+  language: java
+  runtime: jvm
+  version: "21"
+  port: 8080
+  health: /actuator/health
+  framework: spring-boot

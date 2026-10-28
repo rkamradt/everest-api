@@ -1,0 +1,13 @@
+service: kiosk-ui
+archetype: web-app
+domain: kiosk
+purpose: Browser-based touchscreen UI for kiosk customers to browse products and place orders.
+
+calls:
+  kiosk-gateway:
+    via: rest
+    ops:
+      - POST /gateway/orders
+      - GET /gateway/orders/{orderId}
+      - GET /gateway/products
+      - GET /gateway/products/{sku}

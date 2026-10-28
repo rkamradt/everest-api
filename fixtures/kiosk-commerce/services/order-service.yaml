@@ -1,0 +1,64 @@
+service: order-service
+archetype: http
+domain: ordering
+purpose: Owns customer orders from kiosk checkout through payment and handoff to fulfillment.
+
+api:
+  rest:
+    POST /orders:
+      in: PlaceOrder
+      out: Order
+      status: 201
+      desc: Place a new order
+    GET /orders/{orderId}:
+      out: Order
+      desc: Get order by ID
+    GET /orders:
+      out: list<Order>
+      desc: List orders for the authenticated customer
+
+calls:
+  catalog-service:
+    via: rest
+    ops:
+      - GET /products/{sku}
+    timeout: 2s
+    retry:
+      attempts: 2
+    fallback: fail
+
+sends:
+  payment.charge:
+    to: payment-provider
+
+publishes:
+  - order.placed
+  - order.paid
+
+consumes:
+  payment.settled:
+    handler: markPaid
+
+stores:
+  orders:
+    kind: relational
+    pattern: crud
+    retention: 7y
+    entities:
+      Order:
+        id: uuid pk
+        kioskId: string index
+        customerId: uuid?
+        status: "enum[placed, paid, cancelled]"
+        total: money
+        placedAt: timestamp
+      OrderLine:
+        orderId: uuid fk(Order) cascade
+        sku: string
+        qty: int min(1)
+        price: money
+
+deviations:
+  ARCH-010:
+    reason: Price must be authoritative at checkout; a cached price could be minutes stale.
+    scope: calls.catalog-service

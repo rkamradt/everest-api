@@ -1,0 +1,26 @@
+basecamp: everest-basecamp
+version: 1.0.0
+defaults:
+  stack: node-express
+  runtime:
+    port: 8080
+    health: /health
+  deploy:
+    namespace: rkamradt-platform
+    registry: ghcr.io/rkamradt
+    pullPolicy: Always
+  messaging:
+    broker: kafka
+    serialization: json
+    delivery: at-least-once
+    dlq: true
+  persistence:
+    relational: postgres-16
+    document: mongodb-7
+    kv: redis-7
+    cache: redis-7
+    blob: minio
+stacks:
+  - node-express
+  - spring-boot
+  - python-fastapi
