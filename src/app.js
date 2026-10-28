@@ -1,6 +1,7 @@
 'use strict';
 
 const express = require('express');
+const cors = require('cors');
 const { auth } = require('express-oauth2-jwt-bearer');
 const { connect } = require('./db');
 const { ensureBasecamp, basecampVersions, readBasecampAtTag } = require('./gitStore');
@@ -9,6 +10,7 @@ const ecosystemsRouter = require('./routes/ecosystems');
 const messagesRouter = require('./routes/messages');
 
 const app = express();
+app.use(cors({ origin: process.env.CORS_ORIGIN || 'https://everest.kamradtfamily.net' }));
 app.use(express.json({ limit: '2mb' }));
 
 // ─── Health ───────────────────────────────────────────────────────────────────
