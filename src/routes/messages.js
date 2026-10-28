@@ -82,15 +82,13 @@ ${violationText}
 
 - Paths are limited to: ecosystem.yaml, contracts/events.yaml, contracts/commands.yaml, contracts/types.yaml, services/<id>.yaml
 - ALWAYS emit complete file content (not diffs) inside patch blocks.
-- **ecosystem.yaml schema** — `domains` MUST be a flat map of name → description string. Never nest objects under a domain key. Example:
-  ```yaml
+- **ecosystem.yaml schema** — the "domains" key MUST be a flat map of name to description string. Never nest objects under a domain key. Example:
   meta:
     ecosystem: my-system
     description: "What this system does"
     domains:
       catalog: "Product catalog and search"
       ordering: "Cart and order lifecycle"
-  ```
 - If a change would violate a locked rule, discuss it and propose a deviation with a reason — ask the user for the reason if you don't have one.
 - If a change violates a default rule, add a deviations entry with the user's reason rather than silently breaking it.
 - Do NOT generate code, Dockerfiles, CLAUDE.md, Helm charts, or spec.md. Only Everest spec files.`;
